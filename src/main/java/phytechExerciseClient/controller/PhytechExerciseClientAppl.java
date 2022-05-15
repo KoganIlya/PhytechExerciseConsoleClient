@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
-import phytechExerciseClient.model.dto.ItemDto;
+import phytechExerciseClient.dto.ItemDto;
 
 public class PhytechExerciseClientAppl {
 
