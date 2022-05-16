@@ -3,10 +3,7 @@ package phytechExerciseClient.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -15,22 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
-
 import phytechExerciseClient.dto.ItemDto;
 
 public class PhytechExerciseClientAppl {
 
 	private static final String url = "http://localhost:8080/";
+	private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static final RestTemplate restTemplate = new RestTemplate();
 	
 
 	public static void main(String[] args) throws IOException {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		RestTemplate restTemplate = new RestTemplate();
-		
 
-		do {
+		while(true) {
 			System.out.println("Please choose your option");
 			System.out.println("1. Get all items");
 			System.out.println("2. Select item and get the amount");
@@ -56,6 +50,7 @@ public class PhytechExerciseClientAppl {
 				RequestEntity<String> requestEntity = new RequestEntity<String>(HttpMethod.GET, builder2.build().toUri());
 				ResponseEntity<Integer> responseEntity = restTemplate.exchange(requestEntity, Integer.class);
 				System.out.printf("Amount of " + itemName + " in stock is %d", responseEntity.getBody());
+				System.out.println();
 				break;
 			case "3":
 				List<ItemDto> items3 = getAllItems(restTemplate);
@@ -69,14 +64,15 @@ public class PhytechExerciseClientAppl {
 				UriComponentsBuilder builder3 = UriComponentsBuilder.fromHttpUrl(url).path("sell").queryParam("itemId", dto2.getId());
 				RequestEntity<String> requestEntity2 = new RequestEntity<String>(HttpMethod.POST, builder3.build().toUri());
 				ResponseEntity<ItemDto> responseEntity2 = restTemplate.exchange(requestEntity2, ItemDto.class);
-				System.out.printf("You bought item %d for %d", responseEntity2.getBody().getDescription(), responseEntity2.getBody().getPrice());
+				System.out.println("You bought item " +responseEntity2.getBody().getDescription() + " for " + responseEntity2.getBody().getPrice());
+				System.out.println();
 				break;
 			default:
 				return;
 			}
 			
 
-		} while (!br.readLine().equals("4"));
+		} 
 
 	}
 
